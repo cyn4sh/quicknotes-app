@@ -8,6 +8,17 @@ const searchInput = document.querySelector("#search-input");
 
 let notes = [];
 
+function saveNotes() {
+  localStorage.setItem("notes", JSON.stringify(notes));
+}
+
+function loadNotes() {
+  const saved = localStorage.getItem("notes");
+  if (saved) {
+    notes = JSON.parse(saved);
+  }
+}
+
 function render() {
   notesList.textContent = "";
 
@@ -65,6 +76,7 @@ function updateCount() {
 
 function deleteNote(id) {
   notes = notes.filter((note) => note.id !== id);
+  saveNotes();
   render();
 }
 
@@ -94,6 +106,12 @@ noteForm.addEventListener("submit", (e) => {
   };
 
   notes.push(note);
+  saveNotes();
   render();
   noteInput.value = "";
 });
+
+searchInput.addEventListener("input", render);
+
+loadNotes();
+render();
