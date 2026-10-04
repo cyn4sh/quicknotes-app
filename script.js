@@ -71,12 +71,24 @@ function deleteNote(id) {
 noteForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
-  const text = noteInput.value;
+  const text = noteInput.value.trim();
   const category = noteCategory.value;
+
+  if (text === "") {
+    errorMessage.textContent = "Please type a note first.";
+    return;
+  }
+
+  if (text.length > 200) {
+    errorMessage.textContent = "Notes must be 200 characters or fewer.";
+    return;
+  }
+
+  errorMessage.textContent = "";
 
   const note = {
     id: Date.now(),
-    text: text.trim(),
+    text: text,
     category: category,
     createdAt: new Date().toLocaleString(),
   };
